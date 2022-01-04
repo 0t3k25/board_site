@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "board_site"
+version = "0.1.0"
+description = "board_site"
+authors = ["hureta <40241920+0t3k25@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "^4.0"
+mypy = "^0.930"
+black = "^21.12b0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div>{{message.message}}</div>
+{% endfor %}
+{% endif %}
+<h3>主題一覧</h3>
+<p><a class="navbar-brand" href="{% url 'boards:create_theme'%}">主題作成</a></p>
+
+<table class="table tabel-striped table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>タイトル</th>
+            <th>作成者</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for theme in themes%}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{% url 'boards:post_comments' theme_id=theme.id%}">{{ theme.title }}</a></td>
+            {% if theme.user.id == user.id %}
+            <td><a href="{% url 'boards:edit_theme' id=theme.id %}">{{ theme.user }}</a></td>
+            {% else %}
+            <td>{{ theme.user }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

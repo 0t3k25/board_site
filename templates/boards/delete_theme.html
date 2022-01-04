@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>主題削除</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ delete_theme_form.as_p }}
+    <input type="submit" value="削除">
+</form>
+{% endblock %}
