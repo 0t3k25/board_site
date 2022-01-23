@@ -23,6 +23,10 @@
         <a class="navbar-brand" href="{% url 'accounts:user_login'%}">ログイン</a>
         <a class="navbar-brand" href="{% url 'accounts:regist'%}">ユーザー登録</a>
         {% endif %}
+        <form method="GET" action="{% url 'boards:list_themes'%}">
+            <input type="text" name="search_word">
+            <button type="submit">検索</button>
+        </form>
     </nav>
     {% block content %}{% endblock %}
     {% block javascript %}{% endblock %}

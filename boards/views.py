@@ -6,12 +6,13 @@ from django.contrib import messages
 from django.http import Http404
 from django.core.cache import cache
 from django.http import JsonResponse
+from django.db.models import Q
 
-# Create your views here.
+# 主題作成フォーム
 def create_theme(request):
     create_theme_form = forms.CreateThemeForm(request.POST or None)
     if create_theme_form.is_valid():
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated:  # 承認されてないならエラー
             raise Http404
         create_theme_form.instance.user = request.user
         create_theme_form.save()
@@ -29,6 +30,11 @@ def create_theme(request):
 # 投稿一覧表示
 def list_themes(request):
     themes = Themes.objects.fetch_all_themes()
+    # 検索機能
+    search_word = request.GET.get("search_word")
+    if search_word:
+        themes = themes.filter(Q(title__icontains=search_word))
+        messages.success(request, f"「{search_word}」の検索結果")
     return render(
         request,
         "boards/list_themes.html",
@@ -98,6 +104,7 @@ def post_comments(request, theme_id):
     )
 
 
+# コメント一時保存機能
 def save_comment(request):
     if request.is_ajax:
         comment = request.GET.get("comment")

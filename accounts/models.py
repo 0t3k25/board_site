@@ -1,11 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db.models.fields.files import FileField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from uuid import uuid4
 from datetime import datetime, timedelta
-from django.contrib.auth.models import UserManager
 
 
 class Users(AbstractBaseUser, PermissionsMixin):
@@ -31,6 +30,7 @@ class UserActivateTokensManager(models.Manager):
         ).first()
         user = user_activate_token.user
         user.is_active = True
+        user.age = 1
         user.save()
 
 
@@ -48,8 +48,6 @@ class UserActivateTokens(models.Model):
 
 @receiver(post_save, sender=Users)
 def publish_token(sender, instance, **kwargs):
-    print(str(uuid4))
-    print(datetime.now() + timedelta(days=1))
     user_activate_token = UserActivateTokens.objects.create(
         user=instance,
         token=str(uuid4()),
